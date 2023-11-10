@@ -2,30 +2,32 @@
   <div class="code-container">
     <span class="header">
       {{ type.toUpperCase() }}
-      <button class="copy-button" @click="copyToClipBoard">{{ copied === 0 ? 'Copy' : 'Copied' }}</button>
+      <button class="copy-button" @click="saveLayout">{{ saved === 0 ? 'Save' : 'Saved' }}</button>
     </span>
     <pre><code><slot /></code></pre>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useClipboard } from '@vueuse/core'
-
-const { copy } = useClipboard()
-
+import { restart } from '../../store'
 const { type, getCode } = defineProps<{
   type: string
   getCode: () => string
 }>()
 
-let copied = $ref(0)
+let saved = $ref(0)
 
-function copyToClipBoard() {
-  copy(getCode())
-  copied++
+function saveLayout() {
+  const xmlPayloadForLayout = getCode()
+  console.log('====The xmlPayloadForLayout is:===== ', xmlPayloadForLayout)
+  saved = 1
   setTimeout(() => {
-    copied--
+    saved = 0
   }, 2000)
+
+  // send it to the backend for processing
+  // go for new layout while keeping the current stored
+  restart()
 }
 </script>
 

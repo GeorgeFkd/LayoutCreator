@@ -9,12 +9,15 @@
 </template>
 
 <script setup lang="ts">
-import { areaToCSS } from '../../generateCode.js'
+import { areaToCSS, areaToReactCSS } from '../../generateCode.js'
 
 const { area, options } = defineProps<{ area; options }>()
 
 function getCode() {
-  return areaToCSS(area, options)
+  const xmlPayload = areaToReactCSS(area, options)
+  console.log('The xmlPayload is: ', xmlPayload)
+  //send it to the backend
+  return xmlPayload
 }
 </script>
 

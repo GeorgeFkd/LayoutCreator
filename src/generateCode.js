@@ -14,6 +14,18 @@ function declaration(name, value, def) {
   return value !== def ? `\n  ${name}: ${value};` : ''
 }
 
+export function areaToReactCSS(area, { parentGrid, templateAreas = true, repeat, oldSpec }) {
+  const { name, grid } = area
+  const singleLine = areaIsSingleLineInCSS(area)
+  const layoutName = toCssName(name)
+  console.log('=========CSS INFORMATION FOR REACT===========')
+  console.log("const layoutName='" + layoutName + "'")
+  console.log('The name is: ' + name)
+  console.log('The grid is: ' + JSON.stringify(grid))
+
+  return gridToCSSModel(area, { templateAreas, repeat })
+}
+
 export function areaToCSS(area, { parentGrid, templateAreas = true, repeat, oldSpec }) {
   const { name, grid } = area
   const singleLine = areaIsSingleLineInCSS(area)
@@ -53,6 +65,46 @@ export function areaToCSS(area, { parentGrid, templateAreas = true, repeat, oldS
   }
 
   return css
+}
+
+function gridToXml(name, gridTemplateAreas, templateColumns, templateRows) {
+  const layoutElement = document.createElement('layout')
+  layoutElement.setAttribute('name', name)
+  const desktopElement = document.createElement('desktop')
+  // layoutElement.appendChild(desktopLayout)
+  const templateAreasXmlNode = document.createElement('templateAreas')
+  templateAreasXmlNode.innerHTML = gridTemplateAreas
+  const templateColumnsXmlNode = document.createElement('templateColumns')
+  templateColumnsXmlNode.innerHTML = templateColumns
+  const templateRowsXmlNode = document.createElement('templateRows')
+  templateRowsXmlNode.innerHTML = templateRows
+  insertMultipleInto(desktopElement, templateAreasXmlNode, templateColumnsXmlNode, templateRowsXmlNode)
+  layoutElement.appendChild(desktopElement)
+  return layoutElement.outerHTML
+}
+
+export function gridToCSSModel(area, { templateAreas = true, repeat }) {
+  const { grid, name } = area
+  let templateColumns = namedTemplateColumns(grid, repeat)
+  let templateRows = namedTemplateRows(grid, repeat)
+  let gap = `${grid.row.gap} ${grid.col.gap}`
+  let gridTemplateArea = gridTemplateAreas(area, '')
+  console.log('=========GRID INFORMATION FOR REACT===========')
+  console.log("const templateColumns='" + templateColumns + "'")
+  console.log("const templateRows='" + templateRows + "'")
+  console.log("const gap='" + gap + "'")
+  console.log("const gridTemplateArea='" + gridTemplateArea + "'")
+  return gridToXml(name, gridTemplateArea, templateColumns, templateRows)
+
+  // const mobileLayout = xmlDoc.appendChild(xmlDoc.createElement('mobile'))
+  // const tabletLayout = xmlDoc.appendChild(xmlDoc.createElement('tablet'))
+}
+
+function insertMultipleInto(parent, ...args) {
+  for (let i = 0; i < args.length; i++) {
+    const xmlNode = args[i]
+    parent.appendChild(xmlNode)
+  }
 }
 
 export function gridToCSS(area, { templateAreas = true, repeat }) {

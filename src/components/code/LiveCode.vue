@@ -2,33 +2,12 @@
   <PermalinkBar v-show="showPermalink" :path="permalink" @close="showPermalink = false" />
   <div class="buttons-wrapper">
     <div class="buttons">
-      <SidebarButton :disabled="!canUndo" class="btn-history" title="Undo" aria-label="Undo" @click="undo">
-        <IconUndo />
-      </SidebarButton>
-      <SidebarButton :disabled="!canRedo" class="btn-history" title="Redo" aria-label="Redo" @click="redo">
-        <IconRedo />
-      </SidebarButton>
       <SidebarButton aria-label="Restart" class="btn-trash" title="Restart" @click="restart">
         <IconRefresh />
       </SidebarButton>
-      <SidebarButton
-        :disabled="!saveDesign"
-        class="btn-link"
-        title="Get Shareable Link"
-        aria-label="Get Shareable Link"
-        @click="getPermalink"
-      >
-        <IconLink />
-      </SidebarButton>
-    </div>
-    <div class="buttons">
-      <CodepenButton :area="area" :options="options" />
-      <CodeSanboxButton :area="area" :options="options" />
-      <StackblitzButton :area="area" :options="options" />
     </div>
   </div>
   <div style="height: 100%">
-    <HtmlCodeEditor :area="area" :options="options" />
     <div class="code-options-container">
       <CssCodeEditor :area="area" :options="options" />
       <LiveCodeOptions v-model="options" />
@@ -37,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { useAppState, undo, redo, restart } from '../../store.js'
+import { useAppState, restart } from '../../store.js'
 
 import { areaToCSS, areaToHTML } from '../../generateCode.js'
 import { useLocalStorage } from '@vueuse/core'
@@ -94,6 +73,7 @@ let permalink = $ref('')
 function getPermalink() {
   // Permalink supports depends on the deployed editor
   if (saveDesign) {
+    console.log('The mainArea is: ', mainArea)
     saveDesign(mainArea).then((path) => {
       permalink = path
       showPermalink = true

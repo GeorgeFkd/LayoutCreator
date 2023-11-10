@@ -285,5 +285,30 @@ const appState = {
   canUndo,
   canRedo,
 }
+export const layouts = ref([
+  createMainAreaState(), // Initial layout
+])
 
+export const currentLayoutIndex = ref(0)
+
+// Function to add a new layout
+export function addLayout() {
+  const newLayout = createMainAreaState()
+  layouts.value.push(newLayout)
+  switchLayout(layouts.value.length - 1)
+}
+
+// Function to switch to a specific layout
+export function switchLayout(index) {
+  currentLayoutIndex.value = index
+  mainArea.value = layouts.value[index]
+}
+
+// Function to remove a layout
+export function removeLayout(index) {
+  layouts.value.splice(index, 1)
+  // Ensure current layout index stays within bounds
+  currentLayoutIndex.value = Math.min(index, layouts.value.length - 1)
+  mainArea.value = layouts.value[currentLayoutIndex.value]
+}
 export const useAppState = () => appState

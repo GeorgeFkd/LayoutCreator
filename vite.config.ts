@@ -25,8 +25,7 @@ const LayouitPlugin = (): Plugin => {
       viteConfig = config
     },
     async buildEnd(error) {
-      if (error)
-        throw error
+      if (error) throw error
     },
     transformIndexHtml: {
       enforce: 'post',
@@ -60,7 +59,8 @@ const LayouitPlugin = (): Plugin => {
             // )
             let result = html.replace(
               module,
-              `<link rel="modulepreload" href="${moduleName}" />\n${dynamicImportsEntries ? dynamicImportsEntries.filter((dy) => !!dy).join('\n') : ''
+              `<link rel="modulepreload" href="${moduleName}" />\n${
+                dynamicImportsEntries ? dynamicImportsEntries.filter((dy) => !!dy).join('\n') : ''
               }\n${module}`
             )
             // the css will be something like this
@@ -92,11 +92,11 @@ export default defineConfig({
     vuePlugin({
       refTransform: true,
       script: {
-        propsDestructureTransform: true
-      }
+        propsDestructureTransform: true,
+      },
     }),
     Components(),
-    LayouitPlugin(),
+    // LayouitPlugin(),
     VitePWA({
       base: '/',
       scope: '/',

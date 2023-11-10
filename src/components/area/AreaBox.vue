@@ -16,7 +16,6 @@
       overflow: 'hidden',
     }"
   >
-    <!--
     <div
       v-if="!isMain"
       :style="{ top: 5 + toolbarStart * 32 + 'px', left: toolbarStart ? toolbarStart * 20 + 'px' : '5px' }"
@@ -25,7 +24,6 @@
       <AreaName :area="area" @edit="$emit('edit')" />
       <AreaButtons :area="area" />
     </div>
-    -->
   </section>
 </template>
 
@@ -40,13 +38,11 @@ const { area, gridarea } = defineProps<{
 
 defineEmits(['edit'])
 
-/*
-const { area } = toRefs(props)
-const isMain = useIsMainArea(area)
+// const { area } = toRefs(props)
+// const isMain = useIsMainArea(area)
 
-const toolbarStart = computed(() => {
-  const { gridRegion } = props.area
-  return gridRegion ? (gridRegion.col.start === 1 && gridRegion.row.start === 1 ? getAreaDepth(props.area) - 1 : 0) : 0
-})
-*/
+// const toolbarStart = $computed(() => {
+//   const { gridRegion } = props.area
+//   return gridRegion ? (gridRegion.col.start === 1 && gridRegion.row.start === 1 ? getAreaDepth(props.area) - 1 : 0) : 0
+// })
 </script>

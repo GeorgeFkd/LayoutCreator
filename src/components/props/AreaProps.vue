@@ -21,19 +21,9 @@
           <AreaGridTemplateProps :area="area" />
           <AreaGridGapProps :area="area" />
         </PropsAccordionItem>
-        <PropsAccordionItem name="implicit-grid" heading="Implicit Grid" :independent="true" :accordion="accordion">
-          <AreaGridImplicitProps :area="area" />
-        </PropsAccordionItem>
-        <PropsAccordionItem
-          name="grid-items-placement"
-          heading="Grid Placement"
-          :independent="true"
-          :accordion="accordion"
-        >
-          <AreaGridItemsPlacementProps :area="area" />
-          <AreaGridContentPlacementProps :area="area" />
-        </PropsAccordionItem>
       </template>
+      <button @click="exportLayouts">Export All Layouts</button>
+      <button @click="saveLayouts">Send all Layouts to Backend</button>
 
       <PropsAccordionItem
         v-if="area.display === 'flex'"
@@ -63,10 +53,6 @@
         :independent="true"
       >
         <AreaSelfFlexProps :area="area" />
-      </PropsAccordionItem>
-
-      <PropsAccordionItem name="area-box" :independent="true" heading="Area Box" :accordion="accordion">
-        <AreaBoxProps :area="area" />
       </PropsAccordionItem>
 
       <!--
@@ -105,8 +91,10 @@
 <script setup lang="ts">
 // import AreaTree from './AreaTree.vue'
 
-import { useAppState, setCurrentArea, removeArea } from '../../store.js'
-
+import { areaToReactCSS } from '../../generateCode'
+import { useAppState, setCurrentArea, removeArea, layouts } from '../../store.js'
+import JSZip from 'jszip'
+import { saveAs } from 'file-saver'
 let { currentArea, mainArea } = $(useAppState())
 
 const { area } = defineProps<{ area }>()
@@ -114,6 +102,55 @@ const { area } = defineProps<{ area }>()
 let accordion = $ref({ active: 'explicit-grid' })
 let currentGrid = $computed(() => area.grid)
 let currentFlex = $computed(() => area.flex)
+
+function sendFilesToBackend(fileStrings) {}
+
+function saveLayouts() {
+  console.log('====Saving Layouts=====')
+  console.log('The layouts being saved: ', layouts)
+  const { _rawValue } = layouts
+  console.log('The raw value of layouts: ', _rawValue)
+  const layoutsInExportFormat = _rawValue.map((layout) => areaToReactCSS(layout, {}))
+
+  //get the value of the layouts stored in the store
+  //convert them to xml files
+  //send them to the backend
+  /*
+  layouts = []
+  name: 'container',
+    type: 'div',
+    display: 'grid',
+    grid: createGridState(),
+    justifySelf: 'center',
+    alignSelf: 'center',
+    width: 'auto',
+    height: 'auto',
+    color: '#1e1e1e',
+  */
+}
+
+//it works
+async function exportLayouts() {
+  console.log('====Exporting Layouts=====')
+  console.log('The layouts being exported: ', layouts)
+  //get the value of the layouts stored in the store
+  const { _rawValue } = layouts
+  console.log('The raw value of layouts: ', _rawValue)
+  //convert them to XML
+  const layoutsInExportFormat = _rawValue.map((layout) => areaToReactCSS(layout, {}))
+  console.log('Layouts in export format: ', layoutsInExportFormat)
+  //save as zip to PC
+  const zip = new JSZip()
+  layoutsInExportFormat.forEach((layoutXml, index) => {
+    const num = index + 1
+    zip.file('layout' + num + '.xml', layoutXml)
+  })
+  const content = await zip.generateAsync({ type: 'blob' })
+  console.log('Content Generated, now saving to Zip')
+  saveAs(content, 'layouts.zip')
+
+  console.log('=====Zip saved======')
+}
 
 function concatenateParents(area, list = [area]) {
   const { parent } = area

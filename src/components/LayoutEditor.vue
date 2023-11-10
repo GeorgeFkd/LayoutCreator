@@ -1,6 +1,7 @@
 <template>
   <PropsHeader @toggle-props="toggleView('props')" @toggle-code="toggleView('code')" />
   <PropsSidebar :area="mainArea" />
+
   <div class="area-editor-container">
     <AreaEditor :area="mainArea" />
   </div>
