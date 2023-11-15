@@ -26,9 +26,10 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 const { area } = defineProps<{ area }>()
 
-let flex = $computed(() => area.flex)
+let flex = computed(() => area.flex)
 </script>
 
 <style scoped lang="postcss">

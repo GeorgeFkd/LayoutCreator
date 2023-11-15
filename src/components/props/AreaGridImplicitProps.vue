@@ -114,10 +114,7 @@
 </template>
 
 <script setup lang="ts">
-const { area } = defineProps<{ area }>()
-
-let grid = $computed(() => area.grid)
-
+import { computed } from 'vue'
 import {
   addCol,
   addRow,
@@ -154,9 +151,12 @@ import {
 
 import { unitMeasureMap } from '../../utils.js'
 import { debounce } from '../../composables'
+const { area } = defineProps<{ area }>()
 
-let autoColsNumber = $computed(() => grid.col.auto.length)
-let autoRowsNumber = $computed(() => grid.row.auto.length)
+let grid = computed(() => area.grid)
+
+let autoColsNumber = computed(() => grid.col.auto.length)
+let autoRowsNumber = computed(() => grid.row.auto.length)
 
 function unitHasValue(unit) {
   return !(unit === 'initial' || unit === 'auto' || unit === 'min-content' || unit === 'max-content')

@@ -6,9 +6,10 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 const { area } = defineProps<{ area }>()
 
-let grid = $computed(() => area.grid)
+let grid = computed(() => area.grid)
 </script>
 
 <style scoped lang="postcss">

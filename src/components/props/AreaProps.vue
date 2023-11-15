@@ -95,6 +95,7 @@ import { areaToReactCSS } from '../../generateCode'
 import { useAppState, setCurrentArea, removeArea, layouts } from '../../store.js'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
+import { computed } from 'vue'
 let { currentArea, mainArea } = $(useAppState())
 
 const { area } = defineProps<{ area }>()
@@ -148,7 +149,7 @@ function concatenateParents(area, list = [area]) {
   return parent ? concatenateParents(parent, [parent, ...list]) : list
 }
 
-let areaPath = $computed(() => concatenateParents(area))
+let areaPath = computed(() => concatenateParents(area))
 
 watch($$(currentArea), () => {
   if (accordion.active !== 'tree') {

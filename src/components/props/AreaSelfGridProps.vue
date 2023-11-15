@@ -20,6 +20,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { inputSetter } from '../../composables'
 import { useAppState, isValidGridArea, getGridRegion, selectionGridArea } from '../../store.js'
 import { createSection } from '../../utils.js'
@@ -33,10 +34,10 @@ const setGridArea = inputSetter((value) => {
   area.gridArea = value
 }, isValidGridArea)
 
-let isEditing = $computed(() => {
+let isEditing = computed(() => {
   return selection && selection.area === area
 })
-let gridAreaValue = $computed(() => {
+let gridAreaValue = computed(() => {
   if (isEditing) {
     return selectionGridArea(selection)
   } else {

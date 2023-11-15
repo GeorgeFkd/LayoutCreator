@@ -30,7 +30,7 @@
 <script setup lang="ts">
 import { createAreaState, createFlexState, createGridState } from '../../store'
 import { inputSetter } from '../../composables'
-
+import { ref } from 'vue'
 const { area } = defineProps<{ area }>()
 
 const onAreaTextInput = inputSetter((value) => (area.text = value))
@@ -49,11 +49,11 @@ function onUpdateDisplay(value) {
   }
 }
 
-let counter = $ref(1)
+let counter = ref(1)
 function addImplicitArea() {
   area.children.push(
     createAreaState({
-      name: 'a' + counter++,
+      name: 'a' + counter.value++,
       parent: area,
     })
   )

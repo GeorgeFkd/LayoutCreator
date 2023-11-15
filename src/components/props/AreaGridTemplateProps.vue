@@ -108,10 +108,7 @@
 </template>
 
 <script setup lang="ts">
-const { area } = defineProps<{ area }>()
-
-let grid = $computed(() => area.grid)
-
+import { computed } from 'vue'
 import {
   useAppState,
   addCol,
@@ -147,13 +144,16 @@ import {
 import { useGridDimensions } from '../../composables/area.js'
 import { unitMeasureMap } from '../../utils.js'
 import { debounce } from '../../composables'
+const { area } = defineProps<{ area }>()
+
+let grid = computed(() => area.grid)
 
 let { dragging, currentFocus, currentHover } = $(useAppState())
 
 let { colsNumber, rowsNumber } = $(useGridDimensions($$(grid)))
 
-let autoColsNumber = $computed(() => grid.col.auto.length)
-let autoRowsNumber = $computed(() => grid.row.auto.length)
+let autoColsNumber = computed(() => grid.col.auto.length)
+let autoRowsNumber = computed(() => grid.row.auto.length)
 
 function unitHasValue(unit) {
   return !(unit === 'initial' || unit === 'auto' || unit === 'min-content' || unit === 'max-content')

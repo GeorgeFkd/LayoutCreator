@@ -52,7 +52,8 @@
 <script setup lang="ts">
 import { useAppState, setCurrentArea, clearArea, addImplicitArea, removeArea } from '../../store.js'
 
-let { mainArea, selection, currentArea } = $(useAppState())
+let { mainArea, selection, currentArea } = useAppState()
+console.log('Selection: ')
 
 defineProps<{ area }>()
 </script>

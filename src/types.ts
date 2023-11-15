@@ -82,8 +82,13 @@ export interface AreaState {
   //100%
   flexBasis: string
   text: string
-  items: any
+  //as far as we know
+  items: ItemsType
   children: any
   parent: any
   id: string
+}
+
+interface ItemsType {
+  count: number
 }
