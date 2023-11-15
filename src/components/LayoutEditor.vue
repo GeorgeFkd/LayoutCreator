@@ -13,11 +13,11 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, onUnmounted } from 'vue'
 import { loadFromStorage, useAppState } from '../store.js'
 import { keyMonitor } from '../utils/keyMonitor'
 
-let { mainArea, currentView } = $(useAppState())
-
+let { mainArea, currentView } = useAppState()
 const { saveDesign } = defineProps<{ saveDesign?: (area) => string }>()
 
 function toggleView(view) {

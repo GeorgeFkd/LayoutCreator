@@ -58,4 +58,32 @@ export interface ValueGapUnit extends Omit<ValueUnit, 'unit'> {
   unit: DefaultUnit
 }
 
-export * from './types/area'
+//for starters everything will be string
+//then we will refine
+export interface AreaState {
+  name?: string
+  // rgba()
+  color?: string
+  //type of dom elem
+  type: keyof HTMLElementTagNameMap
+  display: string
+  grid: GridState
+  flex: any
+  // gridArea: "2 / 1 / 4 / 4"
+  gridArea: string
+  width: string
+  height: string
+  margin: any
+  padding: string
+  justifySelf: BasicProperties
+  alignSelf: BasicProperties
+  flexGrow: number
+  flexShrink: number
+  //100%
+  flexBasis: string
+  text: string
+  items: any
+  children: any
+  parent: any
+  id: string
+}

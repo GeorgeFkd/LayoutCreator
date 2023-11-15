@@ -1,6 +1,6 @@
 export interface AreaState {
-  name: any
-  color: any
+  name?: string
+  color?: string
   type: any
   display: any
   grid: any

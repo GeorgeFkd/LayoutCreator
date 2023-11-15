@@ -1,17 +1,7 @@
 <template>
   <vue-resizable :min-width="minWidth" :max-width="maxWidth" :width="width" :active="['l']" :disable-attributes="['l']">
     <div :class="['code-sidebar', { active: currentView === 'code' }]">
-      <a
-        class="btn-github"
-        rel="noopener"
-        target="_blank"
-        aria-label="View source on GitHub"
-        href="https://github.com/Leniolabs/layoutit-grid"
-      >
-        <IconGithub />
-      </a>
       <slot name="body" />
-      <BrandBanner />
     </div>
   </vue-resizable>
 </template>
@@ -21,7 +11,7 @@ import VueResizable from 'vue-resizable'
 import { useAppState } from '../../store.js'
 import { debounce } from '../../utils'
 
-let { currentView } = $(useAppState())
+let { currentView } = useAppState()
 
 let maxWidth = ref(0)
 let minWidth = ref(0)

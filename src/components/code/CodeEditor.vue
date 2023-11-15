@@ -10,19 +10,20 @@
 
 <script setup lang="ts">
 import { restart } from '../../store'
+import { ref } from 'vue'
 const { type, getCode } = defineProps<{
   type: string
   getCode: () => string
 }>()
 
-let saved = $ref(0)
+let saved = ref(0)
 
 function saveLayout() {
   const xmlPayloadForLayout = getCode()
   console.log('====The xmlPayloadForLayout is:===== ', xmlPayloadForLayout)
-  saved = 1
+  saved.value = 1
   setTimeout(() => {
-    saved = 0
+    saved.value = 0
   }, 2000)
 
   // send it to the backend for processing

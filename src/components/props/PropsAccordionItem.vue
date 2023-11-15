@@ -11,6 +11,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 const {
   name,
   heading,
@@ -27,11 +28,11 @@ const {
   startOpened?: boolean
 }>()
 
-let opened = $ref(startOpened)
+let opened = ref(startOpened)
 
 function onHeaderClick() {
-  opened = !opened
-  accordion.active = opened ? name : ''
+  opened.value = !opened.value
+  accordion.active = opened.value ? name : ''
 }
 </script>
 

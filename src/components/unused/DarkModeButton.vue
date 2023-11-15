@@ -9,25 +9,26 @@
   </button>
 </template>
 
-<script setup>
-import { onMounted, watch } from 'vue'
+<script setup lang="ts">
+import { Ref, onMounted, watch } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
 import { darkmode } from '../../store'
-
-let themeStorage = $(useLocalStorage('layoutit-grid-theme', null))
+type Theme = 'dark' | 'light'
+//prepei na mathw ti einai to RemovableRef<T>
+let themeStorage: Ref<Theme> = useLocalStorage('layoutit-grid-theme', 'dark')
 
 function toggleDarkmode() {
-  darkmode = !darkmode
-  themeStorage = darkmode ? 'dark' : 'light'
+  darkmode.value = !darkmode.value
+  themeStorage.value = darkmode ? 'dark' : 'light'
 }
 
 function switchToSystemTheme() {
-  darkmode = getSystemTheme() === 'dark'
+  darkmode.value = getSystemTheme() === 'dark'
   themeStorage = null
 }
 
 onMounted(() => {
-  darkmode = (themeStorage || getSystemTheme()) === 'dark'
+  darkmode.value = (themeStorage || getSystemTheme()) === 'dark'
 })
 
 watch($$(darkmode), () => {

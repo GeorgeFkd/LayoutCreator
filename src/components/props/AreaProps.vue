@@ -99,34 +99,25 @@ let { currentArea, mainArea } = $(useAppState())
 
 const { area } = defineProps<{ area }>()
 
-let accordion = $ref({ active: 'explicit-grid' })
-let currentGrid = $computed(() => area.grid)
-let currentFlex = $computed(() => area.flex)
+let accordion = ref({ active: 'explicit-grid' })
+let currentGrid = computed(() => area.grid)
+let currentFlex = computed(() => area.flex)
 
 function sendFilesToBackend(fileStrings) {}
 
 function saveLayouts() {
-  console.log('====Saving Layouts=====')
-  console.log('The layouts being saved: ', layouts)
   const { _rawValue } = layouts
   console.log('The raw value of layouts: ', _rawValue)
-  const layoutsInExportFormat = _rawValue.map((layout) => areaToReactCSS(layout, {}))
-
+  const layoutsInXml = _rawValue.map((layout) => areaToReactCSS(layout, {}))
+  const wrappedLayouts = `
+  <layouts>
+    ${layoutsInXml.reduce((acc, layout) => acc + layout + '\n', '')}
+    </layouts>
+  `
+  console.log('Wrapped Layouts', wrappedLayouts)
   //get the value of the layouts stored in the store
   //convert them to xml files
   //send them to the backend
-  /*
-  layouts = []
-  name: 'container',
-    type: 'div',
-    display: 'grid',
-    grid: createGridState(),
-    justifySelf: 'center',
-    alignSelf: 'center',
-    width: 'auto',
-    height: 'auto',
-    color: '#1e1e1e',
-  */
 }
 
 //it works
@@ -176,7 +167,7 @@ watch($$(currentArea), () => {
   }
 })
 
-function onUpdateType(type) {
+function onUpdateType(type: keyof HTMLElementTagNameMap) {
   area.type = type
   if (type === 'p') {
     if (!area.text) {

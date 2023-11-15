@@ -67,18 +67,21 @@ export function areaToCSS(area, { parentGrid, templateAreas = true, repeat, oldS
   return css
 }
 
-function gridToXml(name, gridTemplateAreas, templateColumns, templateRows) {
+function gridToXml(name, gridTemplateAreas, templateColumns, templateRows, gap) {
   const layoutElement = document.createElement('layout')
-  layoutElement.setAttribute('name', name)
+  const nameOfLayoutElement = document.createElement('name')
   const desktopElement = document.createElement('desktop')
-  // layoutElement.appendChild(desktopLayout)
+  nameOfLayoutElement.innerHTML = name
   const templateAreasXmlNode = document.createElement('templateAreas')
   templateAreasXmlNode.innerHTML = gridTemplateAreas
   const templateColumnsXmlNode = document.createElement('templateColumns')
   templateColumnsXmlNode.innerHTML = templateColumns
   const templateRowsXmlNode = document.createElement('templateRows')
   templateRowsXmlNode.innerHTML = templateRows
-  insertMultipleInto(desktopElement, templateAreasXmlNode, templateColumnsXmlNode, templateRowsXmlNode)
+  const gapXmlNode = document.createElement('gap')
+  gapXmlNode.innerHTML = gap
+  insertMultipleInto(desktopElement, templateAreasXmlNode, templateColumnsXmlNode, templateRowsXmlNode, gapXmlNode)
+  layoutElement.appendChild(nameOfLayoutElement)
   layoutElement.appendChild(desktopElement)
   return layoutElement.outerHTML
 }
@@ -89,15 +92,7 @@ export function gridToCSSModel(area, { templateAreas = true, repeat }) {
   let templateRows = namedTemplateRows(grid, repeat)
   let gap = `${grid.row.gap} ${grid.col.gap}`
   let gridTemplateArea = gridTemplateAreas(area, '')
-  console.log('=========GRID INFORMATION FOR REACT===========')
-  console.log("const templateColumns='" + templateColumns + "'")
-  console.log("const templateRows='" + templateRows + "'")
-  console.log("const gap='" + gap + "'")
-  console.log("const gridTemplateArea='" + gridTemplateArea + "'")
-  return gridToXml(name, gridTemplateArea, templateColumns, templateRows)
-
-  // const mobileLayout = xmlDoc.appendChild(xmlDoc.createElement('mobile'))
-  // const tabletLayout = xmlDoc.appendChild(xmlDoc.createElement('tablet'))
+  return gridToXml(name, gridTemplateArea, templateColumns, templateRows, gap)
 }
 
 function insertMultipleInto(parent, ...args) {

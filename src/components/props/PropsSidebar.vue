@@ -1,9 +1,7 @@
 <template>
   <vue-resizable :min-width="minWidth" :max-width="maxWidth" :width="width" :active="['r']">
     <div :class="['sidebar', { active: currentView === 'props' }]">
-      <div class="sidebar-logo"><BrandLogo /></div>
       <button @click="addLayout">Add New Layout</button>
-
       <select v-model="selectedLayoutIndex" @change="switchSelectedLayout">
         <option v-for="(layout, index) in layouts" :key="index" :value="index">{{ layout.name }}</option>
       </select>
@@ -14,12 +12,12 @@
 
 <script setup lang="ts">
 import VueResizable from 'vue-resizable'
-import { useAppState, layouts, switchLayout, addLayout } from '../../store.js'
+import { useAppState, layouts, switchLayout, addLayout, mainArea } from '../../store.js'
 import { onMounted, onUnmounted, ref, defineProps } from 'vue'
 import { debounce } from '../../utils'
 
 const { currentArea, currentView } = useAppState()
-
+// console.log('The current area is: ', currentArea.value )
 const maxWidth = ref(0)
 const minWidth = ref(0)
 const width = ref(0)
@@ -86,6 +84,7 @@ defineProps<{ area }>()
 
 .sidebar button {
   margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 
 .sidebar select {

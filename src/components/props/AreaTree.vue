@@ -52,10 +52,10 @@
 
 <script setup lang="ts">
 import { useAppState, removeArea, createAreaState, newAreaName, getRandomColor, getAreaDepth } from '../../store.js'
-
-let { mainArea, currentArea, reordering } = $(useAppState())
-
-let depth = $computed(() => 10 + getAreaDepth(area) * 2 + 'px')
+import { computed } from 'vue'
+let { mainArea, currentArea, reordering } = useAppState()
+console.log('The main area is: ', mainArea)
+let depth = computed(() => 10 + getAreaDepth(area) * 2 + 'px')
 
 // name: 'AreaTree',
 
